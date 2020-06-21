@@ -1,4 +1,4 @@
 rootProject.name = 'Spring-Java8-Gradle-MultiProjectTemplate'
 include 'application'
-
+include 'entity'
 

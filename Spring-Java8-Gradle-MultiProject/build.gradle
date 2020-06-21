@@ -6,33 +6,23 @@ buildscript {
 
         springBootVersion = '2.3.1.RELEASE'
         springDependencyManagement = '1.0.9.RELEASE'
+
         junitVersion = '5.6.2'
-        spotBugsVersion = '4.4.1'
+
+        spotBugsVersion = '4.4.2'
         checkstyleVersion = '8.32'
         pmdVersion = '6.23.0'
-
-//        repositories {
-//            jcenter()
-//        }
-
-//        dependencies {
-//
-//        }
+        sonarqubeVersion = '3.0'
     }
 }
-
 
 plugins {
     id 'org.springframework.boot' version "${springBootVersion}" apply false
     id 'io.spring.dependency-management' version "${springDependencyManagement}" apply false
+    id "org.sonarqube" version "${sonarqubeVersion}"
     id "com.github.spotbugs" version "${spotBugsVersion}"  apply false
-
     id 'java'
 }
-
-//group = 'aug.bueno'
-//version = '0.0.1-SNAPSHOT'
-//sourceCompatibility = '1.8'
 
 configurations {
     compileOnly {
@@ -56,14 +46,13 @@ subprojects {
     sourceCompatibility = JavaVersion.VERSION_1_8
 
     apply plugin: 'java'
-
-    apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: "checkstyle"
     apply plugin: "com.github.spotbugs"
     apply plugin: "pmd"
+    apply plugin: "org.sonarqube"
+
 //    apply plugin: 'idea'
-//    apply plugin: "org.sonarqube"
 
     // IntelliJ IDEA : project build path
     //    idea {
@@ -83,9 +72,7 @@ subprojects {
 
     }
 
-
     dependencies {
-        developmentOnly 'org.springframework.boot:spring-boot-devtools'
         implementation 'org.springframework.boot:spring-boot-starter-actuator'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-data-rest'
@@ -139,7 +126,7 @@ subprojects {
     checkstyle {
         configFile = rootProject.file('config/checkstyle/checkstyle.xml') // default value, the line can be remove
         toolVersion = "${checkstyleVersion}"
-        ignoreFailures = false
+        ignoreFailures = true
     }
 
     spotbugs {
@@ -147,6 +134,7 @@ subprojects {
     }
 
     pmd {
+        consoleOutput = true
         ignoreFailures = false
         toolVersion = "${pmdVersion}"
         rulePriority = 2
@@ -162,18 +150,18 @@ subprojects {
         ]
     }
 
-//    sonarqube {
-//        properties {
-//            property "sonar.host.url", "https://sonarcloud.io"
-//            property "sonar.language", "java"
-//            property "sonar.sourceEncoding", "UTF-8"
-//            property "sonar.sources", "src/main/java"
-//            property "sonar.exclusions", "**/*Test*.*, **/Q*.java"
-//            property "sonar.test.inclusions", "**/*Test.java"
-//            property "sonar.coverage.exclusions", "**/*Test*.*, **/Q*.java"
-//            property "sonar.java.junit.reportPaths", "${buildDir}/test-results"
-//            property "sonar.jacoco.reportPaths", "${buildDir}/jacoco/jacoco.exec"
-//        }
-//    }
+    sonarqube {
+        properties {
+            property "sonar.host.url", "https://sonarcloud.io"
+            property "sonar.language", "java"
+            property "sonar.sourceEncoding", "UTF-8"
+            property "sonar.sources", "src/main/java"
+            property "sonar.exclusions", "**/*Test*.*, **/Q*.java"
+            property "sonar.test.inclusions", "**/*Test.java"
+            property "sonar.coverage.exclusions", "**/*Test*.*, **/Q*.java"
+            property "sonar.java.junit.reportPaths", "${buildDir}/test-results"
+            property "sonar.jacoco.reportPaths", "${buildDir}/jacoco/jacoco.exec"
+        }
+    }
 }
 
