@@ -1,0 +1,21 @@
+plugins {
+    id 'application'
+}
+
+ext {
+    artifactId = 'mainApplication'
+}
+
+mainClassName = 'aug.bueno.Application'
+
+dependencies {
+
+}
+
+jar {
+    enabled = true
+}
+
+bootJar {
+    enabled = false
+}
